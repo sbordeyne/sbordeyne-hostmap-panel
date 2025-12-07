@@ -1,4 +1,4 @@
-import { PanelData } from "@grafana/data";
+import { DataFrame, Labels, PanelData } from "@grafana/data";
 import { NodeGroups, Rect } from "types";
 
 /**
@@ -142,4 +142,12 @@ export function groupBy(data: PanelData, groupLabel: string, nodeIdLabel: string
     }
   });
   return groups;
+}
+
+export function getAllLabelsFromFrames(frames: DataFrame[]): Labels {
+  return frames.map(
+    (frame) => frame.fields.map(
+      (field) => (field.labels ?? {})
+    ).reduce((acc, val) => ({ ...acc, ...val }), {})
+  ).reduce((acc, val) => ({ ...acc, ...val }), {});
 }

@@ -65,6 +65,7 @@
         "hexSpacing": 5,
         "hostsPerRow": 5,
         "layoutMode": "wide",
+        "nodeIdLabel": "",
         "seriesCountSize": "sm",
         "showSeriesCount": false,
         "text": "Default value of text input option",
@@ -91,7 +92,22 @@
         "uid": "trlxrdZVk"
       },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
         "overrides": []
       },
       "gridPos": {
@@ -102,10 +118,17 @@
       },
       "id": 2,
       "options": {
+        "groupByLabel": "",
+        "hexSpacing": 10,
+        "hostsPerRow": 5,
+        "layoutMode": "wide",
+        "nodeIdLabel": "",
         "seriesCountSize": "sm",
         "showSeriesCount": false,
-        "text": "Default value of text input option"
+        "text": "Default value of text input option",
+        "zoomMode": "cooperative"
       },
+      "pluginVersion": "1.0.0",
       "targets": [
         {
           "alias": "",
@@ -126,7 +149,41 @@
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "env",
+          "value": "env"
+        },
+        "label": "Group By",
+        "name": "groupBy",
+        "options": [
+          {
+            "selected": true,
+            "text": "env",
+            "value": "env"
+          },
+          {
+            "selected": false,
+            "text": "nodepool",
+            "value": "nodepool"
+          },
+          {
+            "selected": false,
+            "text": "machine_type",
+            "value": "machine_type"
+          },
+          {
+            "selected": false,
+            "text": "os",
+            "value": "os"
+          }
+        ],
+        "query": "env, nodepool, machine_type, os",
+        "type": "custom"
+      }
+    ]
   },
   "time": {
     "from": "now-6h",
@@ -136,5 +193,5 @@
   "timezone": "",
   "title": "Provisioned hostmap-panel dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 1
+  "version": 2
 }

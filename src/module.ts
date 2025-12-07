@@ -3,14 +3,15 @@ import { LayoutMode, PanelOptions, ZoomMode } from './types';
 import { HostmapPanel } from './components/HostmapPanel';
 import { initPluginTranslations, t } from '@grafana/i18n';
 import pluginJson from 'plugin.json';
+import { getAllLabelsFromFrames } from 'utils';
+import { getTemplateSrv } from '@grafana/runtime';
 
 await initPluginTranslations(pluginJson.id);
-
 
 export const plugin = new PanelPlugin<PanelOptions>(HostmapPanel)
   .useFieldConfig({})
   .setPanelOptions((builder) => {
-  const category = ['Hostmap'];
+  const category = [t('panel.options.category', 'Hostmap')];
   builder
     .addSliderInput({
       path: 'hostsPerRow',
@@ -34,22 +35,17 @@ export const plugin = new PanelPlugin<PanelOptions>(HostmapPanel)
         options: [],
         getOptions: async (context) => {
           const labelSet = new Set<string>();
-          const dataFrame = context.data[0];
-          if (!dataFrame) {
-            return [{ value: '', label: t('panel.options.groupByLabel.defaultValueLabel', 'No grouping') }];
-          }
-          dataFrame.fields.forEach((field) => {
-            if (field.labels) {
-              Object.keys(field.labels).forEach((label) => {
-                labelSet.add(label);
-              });
-            }
-          });
+          Object.keys(getAllLabelsFromFrames(context.data)).forEach((labelKey) => labelSet.add(labelKey));
+          const templateSrv = getTemplateSrv();
           const options = Array.from(labelSet).map((label) => ({
             value: label,
             label: label,
           }));
           options.unshift({ value: '', label: t('panel.options.groupByLabel.defaultValueLabel', 'No grouping') });
+          options.unshift(...templateSrv.getVariables().map((variable) => ({
+            value: `$${variable.name}`,
+            label: `Variable: ${variable.label}`,
+          })))
           return options;
         },
       }
@@ -64,21 +60,16 @@ export const plugin = new PanelPlugin<PanelOptions>(HostmapPanel)
         options: [],
         getOptions: async (context) => {
           const labelSet = new Set<string>();
-          const dataFrame = context.data[0];
-          if (!dataFrame) {
-            return [{ value: '', label: t('panel.options.nodeIdLabel.defaultValueLabel', 'No grouping') }];
-          }
-          dataFrame.fields.forEach((field) => {
-            if (field.labels) {
-              Object.keys(field.labels).forEach((label) => {
-                labelSet.add(label);
-              });
-            }
-          });
+          Object.keys(getAllLabelsFromFrames(context.data)).forEach((labelKey) => labelSet.add(labelKey));
+          const templateSrv = getTemplateSrv();
           const options = Array.from(labelSet).map((label) => ({
             value: label,
             label: label,
           }));
+          options.unshift(...templateSrv.getVariables().map((variable) => ({
+            value: `$${variable.name}`,
+            label: `Variable: ${variable.label}`,
+          })))
           options.unshift({ value: '', label: t('panel.options.nodeIdLabel.defaultValueLabel', 'No grouping') });
           return options;
         },

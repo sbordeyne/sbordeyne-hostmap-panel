@@ -94,7 +94,7 @@ function useHover() {
   return { nodeHover, setNodeHover, clearNodeHover };
 }
 
-export const HostmapPanel: React.FC<Props> = ({ options, data, fieldConfig, id, width, height }) => {
+export const HostmapPanel: React.FC<Props> = ({ options, data, fieldConfig, id, width, height, replaceVariables }) => {
   const styles = useStyles2(getStyles);
   const hostsPerRow = options.hostsPerRow || 5;
   const groupByLabel = options.groupByLabel || '';
@@ -113,7 +113,7 @@ export const HostmapPanel: React.FC<Props> = ({ options, data, fieldConfig, id, 
     return <PanelDataErrorView fieldConfig={fieldConfig} panelId={id} data={data} needsStringField />;
   }
 
-  const groups = groupBy(data, groupByLabel, nodeIdLabel);
+  const groups = groupBy(data, replaceVariables(groupByLabel), replaceVariables(nodeIdLabel));
   const groupEntries: GroupEntry[] = Object.entries(groups).map(([groupName, nodes]) => {
     const totalNodeCount = Object.keys(nodes).length;
     const baseBox = getRectBbox(totalNodeCount, hostsPerRow, radius, hexSpacing, 0, 0);

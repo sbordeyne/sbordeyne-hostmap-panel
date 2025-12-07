@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme2 } from '@grafana/ui';
 import { DataFrame, getValueFormat, formattedValueToString } from '@grafana/data';
+import { getAllLabelsFromFrames } from 'utils';
 
 interface Props {
   x: number;
@@ -15,11 +16,7 @@ export const HostTooltip: React.FC<Props> = ({ x, y, frames, onClose }) => {
   const LINE_HEIGHT = 14;
   const CHARACTER_WIDTH = 7;
   const title = 'Host Details';
-  const allLabels = frames.map(
-    (frame) => frame.fields.map(
-      (field) => (field.labels ?? {})
-    ).reduce((acc, val) => ({ ...acc, ...val }), {})
-  ).reduce((acc, val) => ({ ...acc, ...val }), {});
+  const allLabels = getAllLabelsFromFrames(frames);
   const allValues = frames.map(
     (frame) => frame.fields.filter((field) => field.name !== 'Time').map(
       (field) => {
