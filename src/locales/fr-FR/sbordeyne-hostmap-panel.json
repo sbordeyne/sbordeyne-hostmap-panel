@@ -1,0 +1,34 @@
+{
+  "panel": {
+    "options": {
+      "groupByLabel": {
+        "defaultValueLabel": "Pas de groupes",
+        "description": "Label utilisé pour grouper les hôtes dans la hostmap",
+        "name": "Grouper par label"
+      },
+      "hexSpacing": {
+        "description": "Valeur en pixels de l'espacement entre les hexagones dans la hostmap",
+        "name": "Espacement des hexagones"
+      },
+      "hostsPerRow": {
+        "description": "Nombre d'hôtes à afficher par ligne dans un groupement de la hostmap",
+        "name": "Hôtes par ligne"
+      },
+      "layoutMode": {
+        "description": "Mode d'agencement pour la hostmap, étendu en largeur ou compact",
+        "enum": {
+          "wide": "Étendu"
+        },
+        "name": "Agencement"
+      },
+      "zoomMode": {
+        "description": "Comportement du zoom dans la hostmap, coopératif ou avare. Le mode coopératif ajuste le zoom uniquement lorsque le curseur est sur le panel.",
+        "enum": {
+          "cooperative": "Coopératif",
+          "greedy": "Avare"
+        },
+        "name": "Mode de zoom"
+      }
+    }
+  }
+}

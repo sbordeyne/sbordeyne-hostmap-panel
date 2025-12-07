@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Hostmap",
+  "id": "sbordeyne-hostmap-panel",
+  "info": {
+    "keywords": ["panel"],
+    "description": "",
+    "author": {
+      "name": "Simon Bordeyne",
+      "email": "simon.bordeyne@gmail.com",
+      "url": "https://github.com/sbordeyne"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [
+      {
+        "path": "img/screenshots/hostmap-panel.png",
+        "name": "Hostmap Panel Example"
+      },
+      {
+        "path": "img/screenshots/hostmap-panel-options.png",
+        "name": "Hostmap Panel Options"
+      }
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=12.1.0",
+    "plugins": []
+  },
+  "languages": ["en-US", "fr-FR"]
+}

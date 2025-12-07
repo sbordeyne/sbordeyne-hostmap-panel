@@ -1,0 +1,34 @@
+{
+  "panel": {
+    "options": {
+      "groupByLabel": {
+        "defaultValueLabel": "No grouping",
+        "description": "Label to group hosts by in the hostmap",
+        "name": "Group by label"
+      },
+      "hexSpacing": {
+        "description": "Spacing between hexagons in the hostmap",
+        "name": "Hexagon Spacing"
+      },
+      "hostsPerRow": {
+        "description": "Number of hosts to display in each row of the hostmap",
+        "name": "Number of hosts displayed per row"
+      },
+      "layoutMode": {
+        "description": "Select the layout mode for the hostmap",
+        "enum": {
+          "wide": "Wide"
+        },
+        "name": "Layout Mode"
+      },
+      "zoomMode": {
+        "description": "Select the zoom interaction mode",
+        "enum": {
+          "cooperative": "Cooperative",
+          "greedy": "Greedy"
+        },
+        "name": "Zoom Mode"
+      }
+    }
+  }
+}

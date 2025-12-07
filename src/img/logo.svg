@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="107.66675mm"
+   height="108.30511mm"
+   viewBox="0 0 107.66675 108.30511"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient3">
+      <stop
+         style="stop-color:#f2cd0d;stop-opacity:1;"
+         offset="0"
+         id="stop3" />
+      <stop
+         style="stop-color:#ff9830;stop-opacity:1;"
+         offset="1"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3"
+       id="linearGradient4"
+       x1="16.848969"
+       y1="46.113609"
+       x2="73.890717"
+       y2="46.113609"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-18.770041,-15.398804)">
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#3863ab;stroke-width:5.465;stroke-dasharray:none;stroke-opacity:1"
+       id="path1"
+       d="M 72.929428,46.113609 59.149635,69.980911 H 31.59005 L 17.810257,46.113609 31.59005,22.246308 l 27.559585,0 z"
+       transform="rotate(30,45.369844,46.113609)" />
+    <path
+       style="fill:url(#linearGradient4);stroke:#3863ab;stroke-width:1.665;stroke-dasharray:none;stroke-opacity:0.495979;paint-order:normal"
+       id="path1-3"
+       d="M 72.929428,46.113609 59.149635,69.980911 H 31.59005 L 17.810257,46.113609 31.59005,22.246308 l 27.559585,0 z"
+       transform="matrix(0.92840109,0.53601262,-0.53601262,0.92840109,82.554044,-21.084641)" />
+    <path
+       style="fill:#000000;fill-opacity:0;stroke:#3863ab;stroke-width:5.465;stroke-dasharray:none;stroke-opacity:1"
+       id="path1-2"
+       d="M 72.929428,46.113609 59.149635,69.980911 H 31.59005 L 17.810257,46.113609 31.59005,22.246308 l 27.559585,0 z"
+       transform="rotate(30,-28.317875,120.99085)" />
+  </g>
+</svg>
