@@ -1,11 +1,9 @@
-import { DataFrame } from '@grafana/data';
 import React from 'react';
 
 interface Props extends Omit<React.SVGAttributes<SVGPolygonElement>, 'points'> {
   cx: number;
   cy: number;
   radius: number;
-  frame: DataFrame;
   isHovered?: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
@@ -50,7 +48,7 @@ export const HostDisplay: React.FC<Props> = (props: Props) => {
   return (
     <polygon
       points={points}
-      {...(rest as any)}
+      {...(rest)}
       strokeWidth={hoverStrokeWidth}
       opacity={hoverOpacity}
       onClick={handleClick}

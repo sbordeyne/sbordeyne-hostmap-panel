@@ -1,20 +1,42 @@
 import React from 'react';
 import { useTheme2 } from '@grafana/ui';
+import { DataFrame, getValueFormat, formattedValueToString } from '@grafana/data';
 
 interface Props {
   x: number;
   y: number;
-  title?: string;
-  lines?: string[];
+  frames: DataFrame[];
   onClose?: () => void;
 }
 
-export const HostTooltip: React.FC<Props> = ({ x, y, title, lines = [], onClose }) => {
+export const HostTooltip: React.FC<Props> = ({ x, y, frames, onClose }) => {
   const theme = useTheme2();
   const PADDING = 6;
   const LINE_HEIGHT = 14;
+  const CHARACTER_WIDTH = 7;
+  const title = 'Host Details';
+  const allLabels = frames.map(
+    (frame) => frame.fields.map(
+      (field) => (field.labels ?? {})
+    ).reduce((acc, val) => ({ ...acc, ...val }), {})
+  ).reduce((acc, val) => ({ ...acc, ...val }), {});
+  const allValues = frames.map(
+    (frame) => frame.fields.filter((field) => field.name !== 'Time').map(
+      (field) => {
+        const fieldName = field.config.displayName || frame.refId || 'Unknown';
+        const fieldValue = formattedValueToString(
+          getValueFormat(field.config.unit)(field.values[field.values.length - 1], field.config.decimals)
+        );
+        return { name: fieldName, value: fieldValue };
+      }
+    )
+  ).reduce((acc, val) => acc.concat(val), []);
+  const lines: string[] = [
+    ...allValues.map(v => `${v.name}: ${v.value}`),
+    ...Object.entries(allLabels).map(([key, value]) => `${key}: ${value}`),
+  ]
   const titleHeight = title ? LINE_HEIGHT : 0;
-  const width = 160;
+  const width = Math.max(...lines.map((l) => l.length * CHARACTER_WIDTH));
   const height = titleHeight + lines.length * LINE_HEIGHT + PADDING * 2;
 
   // Position the tooltip to the right and slightly above the host center
@@ -61,7 +83,7 @@ export const HostTooltip: React.FC<Props> = ({ x, y, title, lines = [], onClose 
         <text
           key={i}
           x={tx + PADDING}
-          y={ty + PADDING + titleHeight + LINE_HEIGHT / 2 + i * LINE_HEIGHT}
+          y={ty + 2*PADDING + titleHeight + LINE_HEIGHT / 2 + i * LINE_HEIGHT}
           fill={theme.colors.text.secondary}
           fontSize={12}
           fontFamily={theme.typography.fontFamily}

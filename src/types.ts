@@ -3,6 +3,7 @@ import { DataFrame } from "@grafana/data";
 export interface PanelOptions {
   hostsPerRow: number;
   groupByLabel: string;
+  nodeIdLabel: string;
   hexSpacing: number;
   zoomMode: ZoomMode;
   layoutMode: LayoutMode;
@@ -33,7 +34,7 @@ export interface Bounds {
 
 export type GroupEntry = {
   name: string;
-  frames: DataFrame[];
+  nodes: NodeInfos;
   boxWidth: number;
   boxHeight: number;
 };
@@ -69,3 +70,11 @@ export interface LayoutProperties {
 export interface GroupCoord extends GroupEntry {
   origin: Point;
 }
+
+export interface HostDetails extends Point {
+  id: string;
+  frames: DataFrame[];
+}
+
+export type NodeGroups = Record<string, NodeInfos>;
+export type NodeInfos = Record<string, DataFrame[]>;

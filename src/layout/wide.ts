@@ -42,7 +42,7 @@ export class WideLayout implements Layout {
       // Determine whether this group layout produces any "long rows" (rows with N+1 items).
       // Mirror `getRectBbox` logic exactly so origin computation matches the bbox math.
       const N = this.hostsPerRow;
-      const H = entry.frames.length;
+      const H = Object.keys(entry.nodes).length;
 
       const evenLen = N;
       const oddLen = N + 1;

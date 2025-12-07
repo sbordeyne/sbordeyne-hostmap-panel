@@ -1,4 +1,5 @@
-import { Rect } from "types";
+import { PanelData } from "@grafana/data";
+import { NodeGroups, Rect } from "types";
 
 /**
  * Compute the bounding box of a hex group laid out with alternating row lengths:
@@ -111,4 +112,34 @@ export function getKeyForLabels(labels: Record<string, string>): string {
   return Object.entries(labels)
     .map(([key, value]) => `${key}=${value}`)
     .reduce((prev, curr) => `${prev};${curr}`, '');
+}
+
+export function groupBy(data: PanelData, groupLabel: string, nodeIdLabel: string): NodeGroups {
+  const groups: NodeGroups = {};
+  data.series.forEach((frame) => {
+    const field = frame.fields.find((f) => f.name === 'Value');
+    if (!field) {
+      return;
+    }
+    const groupLabelValue = (field.labels ?? {})[groupLabel] || 'all';
+    let nodeIdLabelValue: string;
+    if (nodeIdLabel === '') {
+      nodeIdLabelValue = getKeyForLabels(field.labels ?? {});
+    } else {
+      nodeIdLabelValue = (field.labels ?? {})[nodeIdLabel];
+    }
+    if (Object.keys(groups).includes(groupLabelValue)) {
+      if (Object.keys(groups[groupLabelValue]).includes(nodeIdLabelValue)) {
+        groups[groupLabelValue][nodeIdLabelValue].push(frame);
+      }
+      else {
+        groups[groupLabelValue][nodeIdLabelValue] = [frame];
+      }
+    } else {
+      groups[groupLabelValue] = {
+        [nodeIdLabelValue]: [frame],
+      };
+    }
+  });
+  return groups;
 }

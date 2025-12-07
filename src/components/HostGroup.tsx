@@ -1,12 +1,13 @@
-import { DataFrame, FieldConfigSource, getActiveThreshold } from '@grafana/data';
+import { getActiveThreshold } from '@grafana/data';
 import React from 'react';
 import { HostDisplay } from './HostDisplay';
 import { useTheme2 } from '@grafana/ui';
-import { getKeyForLabels, getRectBbox, indexToRowCol } from 'utils';
+import { getRectBbox, indexToRowCol } from 'utils';
+import { HostDetails, NodeInfos } from 'types';
 
 interface Props extends React.SVGAttributes<SVGGElement> {
   hostsPerRow: number;
-  group: DataFrame[];
+  nodes: NodeInfos;
   x: number;
   y: number;
   radius: number;
@@ -15,23 +16,22 @@ interface Props extends React.SVGAttributes<SVGGElement> {
   hoveredId?: string;
   onHostHover: (id: string | undefined) => void;
   onHostHoverEnd: () => void;
-  fieldConfig: FieldConfigSource;
-  selectedHost?: { id: string; x: number; y: number; title?: string; lines?: string[] };
-  onHostClick?: (s: { id: string; x: number; y: number; title?: string; lines?: string[] } | undefined) => void;
+  selectedHost?: HostDetails;
+  onHostClick?: (s: HostDetails | undefined) => void;
 }
 
 export const HostGroup: React.FC<Props> = (props: Props) => {
-  const { hostsPerRow, group, radius, x, y, hexSpacing, name, hoveredId, onHostHover, onHostHoverEnd } = props;
+  const { hostsPerRow, nodes, radius, x, y, hexSpacing, name, hoveredId, onHostHover, onHostHoverEnd } = props;
   const theme = useTheme2();
   const hostDisplays: React.ReactNode[] = [];
+  const totalNodeCount = Object.keys(nodes).length;
 
-  group.forEach((frame, frameIndex) => {
-    const field = frame?.fields.find((f) => f.name === 'Value');
+  Object.entries(nodes).forEach(([key, frames], frameIndex) => {
+    const field = frames[0]?.fields.find((f) => f.name === 'Value');
     if (!field) {
       return;
     }
 
-    const key = `${frame.refId}-${frameIndex}-${getKeyForLabels(field.labels ?? {})}`;
     const { rowIndex, columnIndex } = indexToRowCol(frameIndex, hostsPerRow);
     const dx = Math.sqrt(3) * radius + hexSpacing;
     const dy = 1.5 * radius + hexSpacing;
@@ -40,8 +40,7 @@ export const HostGroup: React.FC<Props> = (props: Props) => {
     const cy = y + dy * rowIndex;
     const isHovered = hoveredId === key;
 
-    const thresholdsConfig = props.fieldConfig.defaults.thresholds;
-    const threshold = getActiveThreshold(field.values[field.values.length - 1], thresholdsConfig?.steps);
+    const threshold = getActiveThreshold(field.values[field.values.length - 1], field.config.thresholds?.steps);
 
     const handleClick = () =>
       props.onHostClick &&
@@ -49,10 +48,7 @@ export const HostGroup: React.FC<Props> = (props: Props) => {
         id: key,
         x: cx,
         y: cy,
-        title: frame.refId,
-        lines: [String(field.values[field.values.length - 1])].concat(
-          Object.entries(field.labels ?? {}).map(([k, v]) => `${k}: ${v}`)
-        ),
+        frames,
       });
 
     hostDisplays.push(
@@ -62,7 +58,6 @@ export const HostGroup: React.FC<Props> = (props: Props) => {
         cy={cy}
         radius={radius}
         style={{ fill: threshold.color, border: theme.colors.primary.border }}
-        frame={frame}
         isHovered={isHovered}
         onMouseEnter={() => onHostHover(key)}
         onMouseLeave={onHostHoverEnd}
@@ -70,7 +65,7 @@ export const HostGroup: React.FC<Props> = (props: Props) => {
       />
     );
   });
-  const rectBbox = getRectBbox(group.length, hostsPerRow, radius, hexSpacing, x, y);
+  const rectBbox = getRectBbox(totalNodeCount, hostsPerRow, radius, hexSpacing, x, y);
 
   // Header rules
   const showHeader = name !== 'all';

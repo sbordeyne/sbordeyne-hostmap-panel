@@ -54,6 +54,36 @@ export const plugin = new PanelPlugin<PanelOptions>(HostmapPanel)
         },
       }
     })
+    .addSelect({
+      path: 'nodeIdLabel',
+      name: t('panel.options.nodeIdLabel.name', 'Node ID label'),
+      category,
+      description: t('panel.options.nodeIdLabel.description', 'Label to identify individual nodes'),
+      defaultValue: '',
+      settings: {
+        options: [],
+        getOptions: async (context) => {
+          const labelSet = new Set<string>();
+          const dataFrame = context.data[0];
+          if (!dataFrame) {
+            return [{ value: '', label: t('panel.options.nodeIdLabel.defaultValueLabel', 'No grouping') }];
+          }
+          dataFrame.fields.forEach((field) => {
+            if (field.labels) {
+              Object.keys(field.labels).forEach((label) => {
+                labelSet.add(label);
+              });
+            }
+          });
+          const options = Array.from(labelSet).map((label) => ({
+            value: label,
+            label: label,
+          }));
+          options.unshift({ value: '', label: t('panel.options.nodeIdLabel.defaultValueLabel', 'No grouping') });
+          return options;
+        },
+      }
+    })
     .addNumberInput({
       path: 'hexSpacing',
       category,
